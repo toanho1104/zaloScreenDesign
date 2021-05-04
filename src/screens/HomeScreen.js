@@ -1,36 +1,81 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { Component } from 'react';
-import { Text, StyleSheet, View, SafeAreaView, ScrollView } from 'react-native';
-import Item from '../components/itemList';
+import {
+  Text,
+  StyleSheet,
+  View,
+  SafeAreaView,
+  ScrollView,
+  FlatList,
+  Image,
+} from 'react-native';
+import ItemSearch from '../components/ItmeListSearch';
+import ItemFriend from '../components/ItemListFriend';
+import { images } from '../styles/images';
+
 export default class HomeScreen extends Component {
-  randomColor = () => {
-    let index = Math.floor(Math.random() * dataColor.length);
-
-    return dataColor[index];
-  };
-
-  renderListItem = () => {
+  renderListItemSearch = () => {
     return (
-      <View
-        style={
-          {
-            // width: '90%',
-          }
-        }>
-        {dataItem.map((item, index) => {
-          return <Item item={item} key={index} color={this.randomColor()} />;
-        })}
-      </View>
+      <FlatList
+        showsHorizontalScrollIndicator={false}
+        style={{ height: 137 }}
+        horizontal
+        data={dataUser}
+        keyExtractor={item => `lis${item.id}`}
+        renderItem={({ item, index }) => {
+          return <ItemSearch item={item} />;
+        }}
+      />
     );
   };
+
+  renderListItemFr = () => {
+    return (
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        style={{ paddingHorizontal: 10 }}
+        data={dataUser}
+        keyExtractor={item => `${item.id}`}
+        renderItem={({ item, index }) => {
+          return <ItemFriend item={item} />;
+        }}
+      />
+    );
+  };
+
   render() {
-    console.log(this.randomColor());
+    const TitleList = ({ title, icon }) => {
+      return (
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            width: '100%',
+            marginTop: 12,
+          }}>
+          <Image
+            source={icon}
+            style={{ width: 20, height: 20, marginLeft: 10 }}
+          />
+          <Text
+            style={{
+              fontWeight: 'bold',
+              fontSize: 20,
+              marginVertical: 10,
+              marginLeft: 8,
+            }}>
+            {title}
+          </Text>
+        </View>
+      );
+    };
     return (
       <View style={styles.constainer}>
         <SafeAreaView />
-        <ScrollView style={{ paddingHorizontal: 10 }}>
-          {this.renderListItem()}
-        </ScrollView>
+        <TitleList title="Danh sách tìm kiếm gần đây" icon={images.search} />
+        {this.renderListItemSearch()}
+        <TitleList title="Gợi ý kết bạn" icon={images.friend} />
+        {this.renderListItemFr()}
       </View>
     );
   }
@@ -38,10 +83,52 @@ export default class HomeScreen extends Component {
 
 const styles = StyleSheet.create({
   constainer: {
-    // flex: 1,
+    flex: 1,
     // alignItems: 'center',
   },
 });
 
-const dataItem = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-const dataColor = ['#ff0000', '#ffbf00', '#0040ff', '#00ff00', '#ff8000'];
+const dataUser = [
+  {
+    id: 1,
+    name: 'Black Widdow',
+    imageUrl: images.blackwidow,
+    mutualFriends: 3,
+  },
+  {
+    id: 2,
+    name: 'Captain',
+    imageUrl: images.captain,
+    mutualFriends: 9,
+  },
+  {
+    id: 3,
+    name: 'Flash',
+    imageUrl: images.flash,
+    mutualFriends: 34,
+  },
+  {
+    id: 4,
+    name: 'Spiderman',
+    imageUrl: images.spiderman,
+    mutualFriends: 4,
+  },
+  {
+    id: 5,
+    name: 'WonderWoman',
+    imageUrl: images.wonderwoman,
+    mutualFriends: 4,
+  },
+  {
+    id: 6,
+    name: 'Spiderman',
+    imageUrl: images.spiderman,
+    mutualFriends: 4,
+  },
+  {
+    id: 7,
+    name: 'Flash',
+    imageUrl: images.flash,
+    mutualFriends: 34,
+  },
+];
